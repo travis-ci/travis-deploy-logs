@@ -30,13 +30,19 @@ module TravisDeployLogs
       env = params[:env].gsub("-", "_")
       app = params[:app]
 
+      heroku_org = if app =~ /\Apro-/ || env =~ /\Acom/
+                     TravisDeployLogs.config.heroku_orgs["com"]
+                   else
+                     TravisDeployLogs.config.heroku_orgs["org"]
+                   end
+
       heroku_app = TravisDeployLogs.config.heroku_apps[env][app]
 
       if heroku_app.nil?
         halt 404, "Unknown app"
       end
 
-      redirect "https://dashboard-next.heroku.com/apps/#{heroku_app}/activity/builds/#{params[:id]}"
+      redirect "https://dashboard-next.heroku.com/orgs/#{heroku_org}/apps/#{heroku_app}/activity/builds/#{params[:id]}"
     end
   end
 end
