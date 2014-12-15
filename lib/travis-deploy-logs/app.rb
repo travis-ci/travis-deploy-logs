@@ -42,7 +42,7 @@ module TravisDeployLogs
         halt 404, "Unknown app"
       end
 
-      redirect "https://dashboard-next.heroku.com/orgs/#{heroku_org}/apps/#{heroku_app}/activity/builds/#{params[:id]}"
+      redirect "https://dashboard.heroku.com/orgs/#{heroku_org}/apps/#{heroku_app}/activity/builds/#{params[:id]}"
     end
   end
 end
