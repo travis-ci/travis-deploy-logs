@@ -1,4 +1,5 @@
 require "sinatra/base"
+require 'rack/utils'
 require "travis/config"
 
 module TravisDeployLogs
@@ -18,7 +19,9 @@ module TravisDeployLogs
 
     configure :production do
       use Rack::Auth::Basic do |username, password|
-        username == TravisDeployLogs.config.basic_username && password == TravisDeployLogs.config.basic_password
+        basic_username = TravisDeployLogs.config.basic_username
+        basic_password = TravisDeployLogs.config.basic_password
+        Rack::Utils.secure_compare(username, basic_username) && Rack::Utils.secure_compare(password, basic_password)
       end
     end
 
